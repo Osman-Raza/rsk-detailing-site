@@ -174,3 +174,66 @@ document.getElementById('quoteForm').addEventListener('submit', function(e) {
     update();
   });
 })();
+
+// GALLERY FILTER + LIGHTBOX
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.gallery-card'));
+  if (!cards.length) return;
+
+  // Filtering
+  var tabs = document.querySelectorAll('.gallery-tab');
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function (t) { t.classList.remove('is-active'); });
+      tab.classList.add('is-active');
+      var f = tab.getAttribute('data-filter');
+      cards.forEach(function (c) {
+        var match = f === 'all' || c.getAttribute('data-cat') === f;
+        c.classList.toggle('is-hidden', !match);
+      });
+    });
+  });
+
+  // Lightbox
+  var box = document.getElementById('lightbox');
+  var boxImg = document.getElementById('lightbox-img');
+  var boxCap = document.getElementById('lightbox-cap');
+  var current = 0;
+
+  function visibleCards() {
+    return cards.filter(function (c) { return !c.classList.contains('is-hidden'); });
+  }
+  function show(i) {
+    var list = visibleCards();
+    if (!list.length) return;
+    current = (i + list.length) % list.length;
+    var img = list[current].querySelector('img');
+    boxImg.src = img.src;
+    boxImg.alt = img.alt;
+    boxCap.textContent = img.alt;
+  }
+  function open(card) {
+    var list = visibleCards();
+    show(list.indexOf(card));
+    box.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    box.hidden = true;
+    document.body.style.overflow = '';
+  }
+
+  cards.forEach(function (c) {
+    c.addEventListener('click', function () { open(c); });
+  });
+  box.querySelector('.lightbox-close').addEventListener('click', close);
+  box.querySelector('.lightbox-prev').addEventListener('click', function () { show(current - 1); });
+  box.querySelector('.lightbox-next').addEventListener('click', function () { show(current + 1); });
+  box.addEventListener('click', function (e) { if (e.target === box) close(); });
+  document.addEventListener('keydown', function (e) {
+    if (box.hidden) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') show(current - 1);
+    else if (e.key === 'ArrowRight') show(current + 1);
+  });
+})();
