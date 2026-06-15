@@ -703,3 +703,29 @@ footer { background:var(--black); border-top:1px solid var(--border-b); padding:
   h2.sec-title { font-size:2.6rem; }
   .gallery-grid { grid-template-columns:1fr; }
 }
+/* ===== INTRO VIDEO OVERLAY ===== */
+#intro-overlay{
+  position:fixed; inset:0; z-index:99999;
+  background:#000; display:flex; align-items:center; justify-content:center;
+  transition:opacity .7s ease;
+}
+#intro-overlay.hide{ opacity:0; pointer-events:none; }
+#intro-video{ width:100%; height:100%; object-fit:cover; }
+#intro-skip{
+  position:absolute; top:24px; right:28px;
+  background:none; border:none; color:rgba(255,255,255,.7);
+  font-family:'DM Sans',sans-serif; font-size:13px; letter-spacing:2px;
+  text-transform:uppercase; cursor:pointer; transition:color .25s ease; z-index:1;
+}
+#intro-skip:hover{ color:var(--blue); }
+#intro-hint{
+  position:absolute; bottom:42px; width:100%; text-align:center;
+  color:rgba(255,255,255,.6); font-family:'DM Sans',sans-serif;
+  font-size:13px; letter-spacing:3px; text-transform:uppercase;
+  animation:introBounce 1.6s infinite; pointer-events:none;
+}
+@keyframes introBounce{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(8px); } }
+body.intro-lock{ overflow:hidden; }
+@media (prefers-reduced-motion: reduce){
+  #intro-hint{ animation:none; }
+}

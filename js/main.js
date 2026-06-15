@@ -1,3 +1,38 @@
+// ===== INTRO VIDEO OVERLAY =====
+(function () {
+  const overlay = document.getElementById('intro-overlay');
+  if (!overlay) return;
+
+  // Play only once per browser session
+  if (sessionStorage.getItem('rsk_intro_seen')) { overlay.remove(); return; }
+
+  document.body.classList.add('intro-lock');
+  const video = document.getElementById('intro-video');
+  const skip  = document.getElementById('intro-skip');
+
+  let dismissed = false;
+  function dismiss() {
+    if (dismissed) return;
+    dismissed = true;
+    sessionStorage.setItem('rsk_intro_seen', '1');
+    overlay.classList.add('hide');
+    document.body.classList.remove('intro-lock');
+    setTimeout(function () { if (overlay.parentNode) overlay.remove(); }, 800);
+  }
+
+  if (video) {
+    video.addEventListener('ended', dismiss);
+    // Fallback: if the video can't autoplay/load, don't trap the user
+    video.addEventListener('error', dismiss);
+  }
+  if (skip) skip.addEventListener('click', dismiss);
+  window.addEventListener('wheel', dismiss, { passive: true });
+  window.addEventListener('touchmove', dismiss, { passive: true });
+  window.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') dismiss();
+  });
+})();
+
 // CUSTOM CURSOR
 const isTouchDevice = window.matchMedia('(hover: none)').matches;
 if (!isTouchDevice) {
