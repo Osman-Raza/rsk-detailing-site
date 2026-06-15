@@ -83,7 +83,7 @@ document.getElementById('quoteForm').addEventListener('submit', function(e) {
   if (!canvas || !wrap) return;
 
   var FRAME_COUNT = 151;
-  var FRAME_W = 1280, FRAME_H = 668;   // source frame dimensions
+  var FRAME_W = 1280, FRAME_H = 714;   // source frame dimensions
   var PATH = 'assets/gt3rs-frames/';
   var ctx = canvas.getContext('2d');
   var images = [];
