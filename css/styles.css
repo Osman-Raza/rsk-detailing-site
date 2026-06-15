@@ -711,6 +711,10 @@ footer { background:var(--black); border-top:1px solid var(--border-b); padding:
 }
 #intro-overlay.hide{ opacity:0; pointer-events:none; }
 #intro-video{ width:100%; height:100%; object-fit:cover; }
+/* On narrow / portrait screens, show the whole car instead of cropping the sides */
+@media (max-width: 768px), (orientation: portrait){
+  #intro-video{ object-fit:contain; }
+}
 #intro-skip{
   position:absolute; top:24px; right:28px;
   background:none; border:none; color:rgba(255,255,255,.7);
